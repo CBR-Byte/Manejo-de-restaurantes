@@ -13,7 +13,7 @@ public class EncargadoVentas extends usuario {
     
     
         
-    public void RegistrarVenta(String id, int cantidad , String nombre, int documento, String telefono){
+    public void RegistrarVenta(String id, int cantidad , String nombre, int documento, String telefono, String dia, int nit){
         
         int flag = 0;
         ArrayList<String> exis = new ArrayList<String>();
@@ -29,13 +29,16 @@ public class EncargadoVentas extends usuario {
         String requerido = "SELECT cantidadrequerida " +
                     "FROM \"INSUMOS\" INNER JOIN \"PRODUCTOINSUMOS\" on \"INSUMOS\".idinsumo = \"PRODUCTOINSUMOS\".idinsumo " +
                     "WHERE idproducto ="+id;
-        
+        String factura = "Select COUNT(*) FROM \"VENTA\"";
+        int cod = Integer.parseInt(bd.consultar(factura, 0, 0));
+        int newCod = cod+1;
         int rows = Integer.parseInt(bd.consultar(c,0,0));
+        
         for(int i = 0; i<rows;i++){
             exis.add(bd.consultar(existencias,0,i));
             req.add(bd.consultar(requerido,0,i));
             ins.add(bd.consultar(insumos, 0, i));
-            }
+        }
         for(int i = 0; i < rows;i++){
             if(Integer.parseInt(exis.get(i))< Integer.parseInt(req.get(i))*cantidad){
                 flag+=1;
@@ -43,12 +46,17 @@ public class EncargadoVentas extends usuario {
             }
         }
         if(flag < 1){
-            
-           // bd.insertar("INSERT INTO public.\"CLIENTE\"(documento, \"nombreCliente\", telefono)"+ "VALUES ("+documento+",'"+nombre+"', "+telefono+");");
+           double costo = Double.parseDouble(bd.consultar("SELECT valor FROM public.\"PRODUCTO\" Where idproducto ="+id,0,0));
+           bd.insertar("INSERT INTO public.\"CLIENTE\"(documento, \"nombreCliente\", telefono)"+ "VALUES ("+documento+",'"+nombre+"', "+telefono+");");
            for(int i = 0; i < rows;i++){
                int nuevasExistencias = Integer.parseInt(exis.get(i))-Integer.parseInt(req.get(i))*cantidad;
                bd.insertar("UPDATE public.\"INSUMOS\" SET existencias="+nuevasExistencias+" WHERE idinsumo="+ins.get(i)+" ;");
-            } 
+            }
+           bd.insertar("INSERT INTO public.\"VENTA\"(\"codFactura\", \"montoFinal\", fecha, dia, \"nitRestaurante\", \"documentoCliente\")VALUES "
+                   + "("+newCod+","+costo+", '"+this.hoy()+"'"+ ",'"+dia+"',"+nit+","+documento+");");
+           bd.insertar("INSERT INTO public.\"VENTAPRODUCTO\"(\"codFactura\", \"idProducto\", cantidad)VALUES "
+                   + "("+newCod+","+id+","+cantidad+");");
+           
         }else{
             JOptionPane.showMessageDialog(null, "No hay suficientes insumos para preparar el pedido");
         }
