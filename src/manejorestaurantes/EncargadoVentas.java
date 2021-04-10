@@ -13,7 +13,7 @@ public class EncargadoVentas extends usuario {
     
     
         
-    public void RegistrarVenta(String id, int cantidad , String nombre, int documento, String telefono, String dia, int nit){
+    public void RegistrarVenta(String id, int cantidad , String nombre, int documento, String telefono, int nit){
         
         int flag = 0;
         ArrayList<String> exis = new ArrayList<String>();
@@ -53,7 +53,7 @@ public class EncargadoVentas extends usuario {
                bd.insertar("UPDATE public.\"INSUMOS\" SET existencias="+nuevasExistencias+" WHERE idinsumo="+ins.get(i)+" ;");
             }
            bd.insertar("INSERT INTO public.\"VENTA\"(\"codFactura\", \"montoFinal\", fecha, dia, \"nitRestaurante\", \"documentoCliente\")VALUES "
-                   + "("+newCod+","+costo+", '"+this.hoy()+"'"+ ",'"+dia+"',"+nit+","+documento+");");
+                   + "("+newCod+","+costo+", '"+this.hoy()+"'"+ ",'"+this.dia()+"',"+nit+","+documento+");");
            bd.insertar("INSERT INTO public.\"VENTAPRODUCTO\"(\"codFactura\", \"idProducto\", cantidad)VALUES "
                    + "("+newCod+","+id+","+cantidad+");");
            

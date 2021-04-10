@@ -54,7 +54,7 @@ public class baseDeDatos {
 
       crearConexion();
       System.out.println(query);
-      Object[] fila = new Object[11];
+      Object[] fila = new Object[12];
 
       try{
 

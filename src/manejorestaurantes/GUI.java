@@ -7,6 +7,9 @@ package manejorestaurantes;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -194,7 +197,11 @@ public class GUI extends javax.swing.JFrame {
         String user = new String(jTextField1.getText());
         String pass = new String(jPasswordField1.getPassword());
         usuario u = new usuario();
-        u.ingresar(user, pass);
+        try {
+            u.ingresar(user, pass);
+        } catch (ParseException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
