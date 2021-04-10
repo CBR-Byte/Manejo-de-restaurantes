@@ -1,5 +1,9 @@
 package manejorestaurantes;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -138,9 +142,16 @@ public class registrarVentas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        EncargadoVentas encargado = new EncargadoVentas();
-        encargado.RegistrarVenta(jTextField1.getText(),Integer.parseInt(jTextField2.getText()),jTextField3.getText(),Integer.parseInt(jTextField4.getText()),jTextField5.getText()
-                                ,Integer.parseInt(jTextField8.getText()));
+        try {
+            EncargadoVentas encargado = new EncargadoVentas();
+            encargado.RegistrarVenta(jTextField1.getText(),Integer.parseInt(jTextField2.getText()),jTextField3.getText(),Integer.parseInt(jTextField4.getText()),jTextField5.getText()
+                    ,Integer.parseInt(jTextField8.getText()));
+        } catch (IOException ex) {
+            Logger.getLogger(registrarVentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.setVisible(false);
+        Encargado ventana = new Encargado();
+        ventana.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

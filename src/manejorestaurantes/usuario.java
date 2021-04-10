@@ -25,7 +25,7 @@ public class usuario {
         
         String validar = new String(bd.consultar("SELECT * FROM \"USUARIO\" WHERE email = '"+user+"'",6,11));
         String creacion = new String(bd.consultar("SELECT * FROM \"USUARIO\" WHERE email = '"+user+"'",11,11));
-        String[] partes = creacion.split("-");
+        String[] partes = creacion.split("-");  
         String actual = this.hoy(); 
         String[] act = actual.split("/");
         Date date1 = new Date(Integer.parseInt(partes[0])-1900,Integer.parseInt(partes[1]),Integer.parseInt(partes[2]));
@@ -68,7 +68,7 @@ public class usuario {
     
     public void registrarse(int ID, String nombre, String apellido, String rol, String email, String celular, String contraseña, String tipoDocumento, String direccion, int NIT){
         bd.insertar("INSERT INTO public.\"USUARIO\"(" +
-        "documento, nombres, apellidos, rol, email, celular, \"contraseña\", \"tipoDocumento\", \"fechaIngreso\", direccion, \"nitRestaurante\", fechac)" +
+        "documento, nombres, apellidos, rol, email, celular, \"contraseña\", \"tipoDocumento\", fechaIngreso, direccion, \"nitRestaurante\", fechac)" +
         "VALUES ("+ID+",'"+nombre+"','"+apellido+ "'"
         + ",'"+rol+"','"+email+"','"+celular+"'"
         + ", '"+contraseña+"', '"+tipoDocumento+"', '"+this.hoy()+"'"
