@@ -8,6 +8,7 @@ package manejorestaurantes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -22,6 +23,9 @@ public class usuario {
     baseDeDatos bd = new baseDeDatos();
     
     public void ingresar(String user, String pass) throws ParseException{
+      
+        bd.reportes("SELECT * FROM \"INSUMOS\"");
+        
         
         String validar = new String(bd.consultar("SELECT * FROM \"USUARIO\" WHERE email = '"+user+"'",6,11));
         String creacion = new String(bd.consultar("SELECT * FROM \"USUARIO\" WHERE email = '"+user+"'",11,11));

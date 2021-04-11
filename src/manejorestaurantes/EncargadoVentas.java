@@ -13,6 +13,15 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.BaseColor;
+import java.io.FileNotFoundException;
 
 
 
@@ -20,7 +29,7 @@ public class EncargadoVentas extends usuario {
     
     
         
-    public void RegistrarVenta(String id, int cantidad , String nombre, int documento, String telefono, int nit) throws IOException{
+    public void RegistrarVenta(String id, int cantidad , String nombre, int documento, String telefono, int nit) throws FileNotFoundException, DocumentException {
         
         int flag = 0;
         ArrayList<String> exis = new ArrayList<String>();
@@ -65,25 +74,19 @@ public class EncargadoVentas extends usuario {
                    + "("+newCod+","+id+","+cantidad+");");
            
            String producto = bd.consultar("SELECT nombre FROM public.\"PRODUCTO\" Where idproducto ="+id,0,0);
-           PDDocument document = new PDDocument();
-           PDPage page = new PDPage(PDRectangle.A6);
-            document.addPage(page);
 
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
-
-            // Text
-            contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_ITALIC, 5);
-            contentStream.newLineAtOffset( 20, page.getMediaBox().getHeight() - 52);
-            contentStream.showText("Fecha: "+this.hoy()+
-                    " Cliente: "+nombre+
-                    " Restaurante:"+nit+
-                    " Producto: "+producto+
-                    " Cantidad: "+cantidad+
-                    " Costo: "+costo*cantidad);
-            contentStream.endText();
-            contentStream.close();
-            document.save("factura_"+cod+".pdf");
+            Document doc = new Document();
+            FileOutputStream ficheroPdf = new FileOutputStream("factura_"+cod+".pdf");
+            PdfWriter.getInstance(doc,ficheroPdf).setInitialLeading(20);
+            doc.open();
+            doc.add(new Paragraph("Fecha: "+this.hoy()));
+            doc.add(new Paragraph("Cliente: "+nombre));
+            doc.add(new Paragraph("Restaurante: "+nit));
+            doc.add(new Paragraph("Producto: "+producto));
+            doc.add(new Paragraph("Cantidad: "+cantidad));
+            doc.add(new Paragraph("Costo total: "+costo*cantidad));
+            doc.close();
+            
             JOptionPane.showMessageDialog(null, "Factura creada");
             
         }else{

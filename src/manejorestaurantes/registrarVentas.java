@@ -1,8 +1,11 @@
 package manejorestaurantes;
 
+import com.itextpdf.text.DocumentException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,6 +22,7 @@ public class registrarVentas extends javax.swing.JFrame {
     /**
      * Creates new form registrarVentas
      */
+    
     public registrarVentas() {
         initComponents();
     }
@@ -142,11 +146,14 @@ public class registrarVentas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       
+        EncargadoVentas encargado = new EncargadoVentas();
         try {
-            EncargadoVentas encargado = new EncargadoVentas();
             encargado.RegistrarVenta(jTextField1.getText(),Integer.parseInt(jTextField2.getText()),jTextField3.getText(),Integer.parseInt(jTextField4.getText()),jTextField5.getText()
                     ,Integer.parseInt(jTextField8.getText()));
-        } catch (IOException ex) {
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(registrarVentas.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
             Logger.getLogger(registrarVentas.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setVisible(false);

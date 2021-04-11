@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 /**
@@ -74,6 +75,37 @@ public class baseDeDatos {
           e.toString();
         }
         return fila[k].toString();
+    }
+    
+      
+    public void reportes(String query){
+        
+        System.out.println(query);
+        crearConexion();
+
+            try{
+
+              Statement s = conexion.createStatement();
+              ResultSet rs = s.executeQuery(query);
+              System.out.println("Print datos");
+              while (rs.next())
+              {
+
+                ArrayList fila = new ArrayList();
+                for (int i=0;i<3;i++){
+                 fila.add(rs.getObject(i+1));       
+                 System.out.println(fila.get(i));
+                }
+
+
+              }
+
+               conexion.close();
+            }
+            catch (Exception e){
+              e.toString();
+            }
+        
     }
     
  
