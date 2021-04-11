@@ -51,7 +51,7 @@ public class baseDeDatos {
     }
     
 
-    public String consultar(String query,int k,int columnas){
+    public String consultar(String query,int k,int columnas,int c){
 
       crearConexion();
       System.out.println(query);
@@ -61,6 +61,11 @@ public class baseDeDatos {
 
         Statement s = conexion.createStatement();
         ResultSet rs = s.executeQuery(query);
+        if(c!=0){
+            for(int i= c;i>0;i--){
+                return rs.getObject(i).toString();
+            }
+        }
         while (rs.next())
         {
 
@@ -69,11 +74,13 @@ public class baseDeDatos {
            fila[i] = rs.getObject(i+1);
           }
         }
+        
         conexion.close();
       }
         catch (Exception e){
           e.toString();
         }
+        
         return fila[k].toString();
     }
     

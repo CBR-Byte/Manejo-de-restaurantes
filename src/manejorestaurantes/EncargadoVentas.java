@@ -46,14 +46,14 @@ public class EncargadoVentas extends usuario {
                     "FROM \"INSUMOS\" INNER JOIN \"PRODUCTOINSUMOS\" on \"INSUMOS\".idinsumo = \"PRODUCTOINSUMOS\".idinsumo " +
                     "WHERE idproducto ="+id;
         String factura = "Select COUNT(*) FROM \"VENTA\"";
-        int cod = Integer.parseInt(bd.consultar(factura, 0, 0));
+        int cod = Integer.parseInt(bd.consultar(factura, 0, 0,0));
         int newCod = cod+1;
-        int rows = Integer.parseInt(bd.consultar(c,0,0));
+        int rows = Integer.parseInt(bd.consultar(c,0,0,0));
         
         for(int i = 0; i<rows;i++){
-            exis.add(bd.consultar(existencias,0,i));
-            req.add(bd.consultar(requerido,0,i));
-            ins.add(bd.consultar(insumos, 0, i));
+            exis.add(bd.consultar(existencias,0,i,0));
+            req.add(bd.consultar(requerido,0,i,0));
+            ins.add(bd.consultar(insumos, 0, i,0));
         }
         for(int i = 0; i < rows;i++){
             if(Integer.parseInt(exis.get(i))< Integer.parseInt(req.get(i))*cantidad){
@@ -62,18 +62,18 @@ public class EncargadoVentas extends usuario {
             }
         }
         if(flag < 1){
-           double costo = Double.parseDouble(bd.consultar("SELECT valor FROM public.\"PRODUCTO\" Where idproducto ="+id,0,0));
+           double costo = Double.parseDouble(bd.consultar("SELECT valor FROM public.\"PRODUCTO\" Where idproducto ="+id,0,0,0));
            bd.insertar("INSERT INTO public.\"CLIENTE\"(documento, \"nombreCliente\", telefono)"+ "VALUES ("+documento+",'"+nombre+"', "+telefono+");");
            for(int i = 0; i < rows;i++){
                int nuevasExistencias = Integer.parseInt(exis.get(i))-Integer.parseInt(req.get(i))*cantidad;
                bd.insertar("UPDATE public.\"INSUMOS\" SET existencias="+nuevasExistencias+" WHERE idinsumo="+ins.get(i)+" ;");
             }
-           bd.insertar("INSERT INTO public.\"VENTA\"(\"codFactura\", \"montoFinal\", fecha, dia, \"nitRestaurante\", \"documentoCliente\")VALUES "
+           bd.insertar("INSERT INTO public.\"VENTA\"(\"codFactura\", \"montofinal\", fecha, dia, \"nitrestaurante\", \"documentoCliente\")VALUES "
                    + "("+newCod+","+costo*cantidad+", '"+this.hoy()+"'"+ ",'"+this.dia()+"',"+nit+","+documento+");");
-           bd.insertar("INSERT INTO public.\"VENTAPRODUCTO\"(\"codFactura\", \"idProducto\", cantidad)VALUES "
+           bd.insertar("INSERT INTO public.\"VENTAPRODUCTO\"(\"codFactura\", \"idproducto\", cantidad)VALUES "
                    + "("+newCod+","+id+","+cantidad+");");
            
-           String producto = bd.consultar("SELECT nombre FROM public.\"PRODUCTO\" Where idproducto ="+id,0,0);
+           String producto = bd.consultar("SELECT nombre FROM public.\"PRODUCTO\" Where idproducto ="+id,0,0,0);
 
             Document doc = new Document();
             FileOutputStream ficheroPdf = new FileOutputStream("factura_"+cod+".pdf");

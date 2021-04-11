@@ -23,12 +23,9 @@ public class usuario {
     baseDeDatos bd = new baseDeDatos();
     
     public void ingresar(String user, String pass) throws ParseException{
-      
-        bd.reportes("SELECT * FROM \"INSUMOS\"");
-        
-        
-        String validar = new String(bd.consultar("SELECT * FROM \"USUARIO\" WHERE email = '"+user+"'",6,11));
-        String creacion = new String(bd.consultar("SELECT * FROM \"USUARIO\" WHERE email = '"+user+"'",11,11));
+
+        String validar = new String(bd.consultar("SELECT * FROM \"USUARIO\" WHERE email = '"+user+"'",6,11,0));
+        String creacion = new String(bd.consultar("SELECT * FROM \"USUARIO\" WHERE email = '"+user+"'",11,11,0));
         String[] partes = creacion.split("-");  
         String actual = this.hoy(); 
         String[] act = actual.split("/");
@@ -39,7 +36,7 @@ public class usuario {
             if(864000000 > (date2.getTime()-date1.getTime())){
                 
             
-                String rol = new String(bd.consultar("SELECT * FROM \"USUARIO\" WHERE email = '"+user+"'",3,12));
+                String rol = new String(bd.consultar("SELECT * FROM \"USUARIO\" WHERE email = '"+user+"'",3,12,0));
                 switch (rol) {
                     case "CC Admin":
                         JOptionPane.showMessageDialog(null, "Bienvenido señor(a) Administrador del Centro comercial");
@@ -58,7 +55,7 @@ public class usuario {
                         break;
                 }
             }else {
-                String id = bd.consultar("SELECT * FROM \"USUARIO\"WHERE email = '"+user+"'", 0, 0);
+                String id = bd.consultar("SELECT * FROM \"USUARIO\"WHERE email = '"+user+"'", 0, 0,0);
                 JOptionPane.showMessageDialog(null, "contraseña vencida");
                 String nueva = JOptionPane.showInputDialog("Ingrese nueva contraseña");
                 bd.insertar("UPDATE \"USUARIO\" SET contraseña = "+nueva+" WHERE documento ="+ id );

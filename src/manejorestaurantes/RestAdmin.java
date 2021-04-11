@@ -21,7 +21,7 @@ public class RestAdmin extends usuario{
     }
     
     public void registrarInsumo(int ID,String nombre, int existencias, double valor){
-        String c =bd.consultar("SELECT COUNT(*) FROM  \"INSUMOS\" WHERE idinsumo ="+ID+"",0,0);
+        String c =bd.consultar("SELECT COUNT(*) FROM  \"INSUMOS\" WHERE idinsumo ="+ID+"",0,0,0);
         System.out.println(c);
         if(c.equals("0")){
             bd.insertar("INSERT INTO public.\"INSUMOS\"(" +
@@ -29,7 +29,7 @@ public class RestAdmin extends usuario{
                     "VALUES ("+ID+",'"+nombre+"',"+existencias+","+valor+");");
         JOptionPane.showMessageDialog(null, "Producto registrado con exito");
         }else{
-            int viejas = Integer.parseInt(bd.consultar("SELECT existencias FROM \"INSUMOS\" WHERE idinsumo ="+ID+"",0, 0));
+            int viejas = Integer.parseInt(bd.consultar("SELECT existencias FROM \"INSUMOS\" WHERE idinsumo ="+ID+"",0, 0,0));
             int nuevas = viejas+existencias;
             
             bd.insertar("UPDATE \"INSUMOS\" SET existencias = "+nuevas +" WHERE idinsumo ="+ ID );
